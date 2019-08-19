@@ -10,13 +10,12 @@
     "gulp-util": "latest"
   },
   "dependencies": {
-    "bourbon": "^5.1.0",
-    "bower": "^1.8.4",
-    "gulp-clean-css": "^3.10.0",
-    "gulp-sourcemaps": "^2.6.4",
-    "moment": "^2.23.0",
-    "neat": "^1.2.2",
+    "bourbon": "^6.0.0",
+    "bower": "^1.8.8",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "moment": "^2.24.0",
     "sass-rem": "^2.0.1",
-    "vue-ctk-date-time-picker": "^1.4.2"
+    "vue-ctk-date-time-picker": "^2.1.1"
   }
 }
