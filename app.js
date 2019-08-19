@@ -43,7 +43,7 @@ new Vue({
   },
   methods: {
     addNew: function(){
-      if(!this.newDate || !this.newDesc || !this.newHours) {
+      if(!this.newData || !this.newDesc || !this.newHours) {
         this.error = true;
       } else {
         this.times.push({
