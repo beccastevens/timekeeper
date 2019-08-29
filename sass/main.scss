@@ -1,0 +1,17 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+.main {
+  margin: 0 auto;
+  max-width: 800px;
+}
+.page-title {
+  text-align: center;
+}
+.error {
+  color: red;
+  width: 100%;
+}
+
+@import "time-form";
+@import "time-sheet";
