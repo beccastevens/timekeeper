@@ -1,33 +1,4 @@
-const times = [
-  {
-    'date': '2018-12-20',
-    'description': 'Read book',
-    'startTime': '9:30 am',
-    'endTime': '4:00 pm',
-    'hours': 6.5
-  },
-  {
-    'date': '2018-12-21',
-    'description': 'Algebra',
-    'startTime': '9:30 am',
-    'endTime': '3:00 pm',
-    'hours': 5.5
-  },
-  {
-    'date': '2018-12-22',
-    'description': 'Wrote journal response',
-    'startTime': '9:00 am',
-    'endTime': '3:00 pm',
-    'hours': 5
-  },
-  {
-    'date': '2018-12-23',
-    'description': 'Planning science project',
-    'startTime': '9:30 am',
-    'endTime': '1:00 pm',
-    'hours': 3.5
-  },
-]
+const times = this.entries;
 
 new Vue({
   el: '#timeSheet',
@@ -40,6 +11,10 @@ new Vue({
     newHours: 0,
     error: false,
     dateError: false
+  },
+  mounted: function () {
+    console.log('Hello from Vue!');
+    this.getEntries();
   },
   methods: {
     addNew: function(){
@@ -111,6 +86,16 @@ new Vue({
     storeDate: function(dateString) {
       var date = moment(dateString).format('YYYY-MM-DD');
       return date;
+    },
+    getEntries: function(){
+      axios.get('api/entries.php')
+      .then(function (response) {
+          console.log(response.data);
+          this.entries = response.data;
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
     }
   },
   computed: {
