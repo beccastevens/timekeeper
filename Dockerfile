@@ -9,3 +9,6 @@ RUN systemctl status php7.0-fpm.service
 # "layer" thats been cached will be used if possible
 WORKDIR /var/www/html
 ADD . /var/www/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
