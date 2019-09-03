@@ -11,10 +11,9 @@ services:
     env_file: .env
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: nginx:latest
     depends_on:
+      - php
       - mysql
     ports:
       - 8080:80
@@ -22,7 +21,9 @@ services:
     volumes:
       - .:/var/www/html
       - ./config/nginx/conf.d:/etc/nginx/conf.d
-    env_file: .env
+
+  php:
+    image: php:7-fpm
 
 volumes:
   mysql_data:
