@@ -1,7 +1,7 @@
 <?php
-$host = "localhost";
+$host = "msyql";
 $user = "root";
-$password = "donkeycatmonger";
+$password = "password";
 $dbname = "timekeeper";
 $id = '';
 

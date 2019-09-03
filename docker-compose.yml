@@ -19,19 +19,19 @@ services:
   #   restart: always
   #   command: php -S 127.0.0.1:8080
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   depends_on:
-  #     - mysql
-  #   ports:
-  #     - 8080:80
-  #   restart: always
-  #   volumes:
-  #     - ./web:/var/www/html:ro
-  #     - ./config/nginx/conf.d:/etc/nginx/conf.d
-  #   env_file: .env
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    ports:
+      - 8080:80
+    restart: always
+    volumes:
+      - ./web:/var/www/html:ro
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+    env_file: .env
 
 volumes:
   mysql_data:
