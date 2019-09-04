@@ -1,14 +1,5 @@
-FROM nginx
+FROM php:7-fpm
 
 MAINTAINER Becca Stevens <christensen.rebeccaa@gmail.com>
 
-RUN apt-get install php-fpm
-RUN systemctl status php7.0-fpm.service
-
-# From here we load our application's code in, therefore the previous docker
-# "layer" thats been cached will be used if possible
-WORKDIR /var/www/html
-ADD . /var/www/html
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli

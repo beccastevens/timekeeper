@@ -23,7 +23,13 @@ services:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
 
   php:
-    image: php:7-fpm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql
+    volumes:
+      - .:/var/www/html
 
 volumes:
   mysql_data:

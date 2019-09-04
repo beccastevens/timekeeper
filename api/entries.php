@@ -1,16 +1,17 @@
 <?php
-$host = "msyql";
+$host = "timekeeper_mysql_1";
 $user = "root";
 $password = "password";
 $dbname = "timekeeper";
+$port = "3306";
+$socket = "/var/run/mysqld/mysqld.sock";
 $id = '';
 
-$con = mysqli_connect($host, $user, $password, $dbname);
+$con = mysqli_connect($host, $user, $password, $dbname, $port, $socket);
 
 $method = $_SERVER['REQUEST_METHOD'];
 $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 //$input = json_decode(file_get_contents('php://input'),true);
-
 
 if (!$con) {
   die("Connection failed: " . mysqli_connect_error());
