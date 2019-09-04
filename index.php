@@ -50,8 +50,8 @@
             {{ displayDate(time.entry_date) }}
           </td>
           <td>{{time.description}}</td>
-          <td>{{ displayTime(time.start_time) }}</td>
-          <td>{{ displayTime(time.end_time) }}</td>
+          <td>{{ time.start_time }}</td>
+          <td>{{ time.end_time }}</td>
           <td>{{time.hours}}</td>
         </tr>
       </tbody>
