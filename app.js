@@ -33,14 +33,17 @@ var app = new Vue({
         axios({
           method: 'post',
           url: 'api/entries.php',
-          data: formData,
+          data: {
+            formData: newEntry,
+            request: 1
+          },
           config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
         .then(function (response) {
           //handle success
           console.log(response);
           app.entries.push(newEntry);
-          appF.resetForm();
+          app.resetForm();
         })
         .catch(function (response) {
           //handle error
@@ -95,7 +98,25 @@ var app = new Vue({
     },
     deleteEntry: function(index) {
       if (confirm('Are you sure you want to delete this entry?')) {
-          app.entries.splice(index,1);
+          // console.log(app.entries[index].id);
+          axios({
+            method: 'post',
+            url: 'api/entries.php',
+            data: {
+              id: app.entries[index].id,
+              request: 2
+            }
+          })
+          .then(function (response) {
+            //handle success
+            // console.log(response);
+            app.entries.splice(index,1);
+          })
+          .catch(function (response) {
+            //handle error
+            this.error = true;
+            console.log(response);
+          });
       } else {
           // Do nothing!
       }

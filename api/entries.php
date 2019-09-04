@@ -10,11 +10,11 @@ $id = '';
 $con = mysqli_connect($host, $user, $password, $dbname, $port, $socket);
 
 $method = $_SERVER['REQUEST_METHOD'];
-$request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
-//$input = json_decode(file_get_contents('php://input'),true);
+// $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
+$data = json_decode(file_get_contents("php://input"));
+$request = $data->request;
 
 if (!$con) {
-  mysqli_close($con);
   die("Connection failed: " . mysqli_connect_error());
 }
 
@@ -25,13 +25,21 @@ switch ($method) {
       $sql = "select * from entries".($id?" where id=$id":'');
       break;
     case 'POST':
-      $date = $_POST["entry_date"];
-      $description = $_POST["description"];
-      $startTime = $_POST["start_time"];
-      $endTime = $_POST["end_time"];
-      $hours = $_POST["hours"];
+      if($request == 1) {
+        // throw new \Exception("formData " . print_r($data, true));
 
-      $sql = "insert into entries (entry_date, description, start_time, end_time, hours) values ('$date', '$description', '$startTime', '$endTime', '$hours')";
+        $date = $data->formData->entry_date;
+        $description = $data->formData->description;
+        $startTime = $data->formData->start_time;
+        $endTime = $data->formData->end_time;
+        $hours = (integer) $data->FormData->hours;
+
+        $sql = "insert into entries (entry_date, description, start_time, end_time, hours) values ('$date', '$description', '$startTime', '$endTime', '$hours')";
+      } elseif ($request == 2) {
+        $id = $data->id;
+
+        $sql = "delete from entries where id=$id";
+      }
       break;
 }
 
@@ -41,7 +49,6 @@ $result = mysqli_query($con,$sql);
 // die if SQL statement failed
 if (!$result) {
   http_response_code(400);
-  mysqli_close($con);
   die(mysqli_error($con));
 }
 
@@ -52,6 +59,8 @@ if ($method == 'GET') {
     }
     if (!$id) echo ']';
   } elseif ($method == 'POST') {
+    echo json_encode($result);
+  } elseif($method == 'delete') {
     echo json_encode($result);
   } else {
     echo mysqli_affected_rows($con);
