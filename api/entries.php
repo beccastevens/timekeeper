@@ -14,6 +14,7 @@ $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 //$input = json_decode(file_get_contents('php://input'),true);
 
 if (!$con) {
+  mysqli_close($con);
   die("Connection failed: " . mysqli_connect_error());
 }
 
@@ -24,10 +25,10 @@ switch ($method) {
       $sql = "select * from entries".($id?" where id=$id":'');
       break;
     case 'POST':
-      $date = $_POST["date"];
+      $date = $_POST["entry_date"];
       $description = $_POST["description"];
-      $startTime = $_POST["startTime"];
-      $endTime = $_POST["endTime"];
+      $startTime = $_POST["start_time"];
+      $endTime = $_POST["end_time"];
       $hours = $_POST["hours"];
 
       $sql = "insert into entries (entry_date, description, start_time, end_time, hours) values ('$date', '$description', '$startTime', '$endTime', '$hours')";
@@ -39,7 +40,8 @@ $result = mysqli_query($con,$sql);
 
 // die if SQL statement failed
 if (!$result) {
-  http_response_code(404);
+  http_response_code(400);
+  mysqli_close($con);
   die(mysqli_error($con));
 }
 
@@ -55,4 +57,4 @@ if ($method == 'GET') {
     echo mysqli_affected_rows($con);
   }
 
-$con->close();
+mysqli_close($con);

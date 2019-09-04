@@ -18,30 +18,54 @@ var app = new Vue({
       if(!this.newDate || !this.newDesc || !this.newHours) {
         this.error = true;
       } else {
-        this.entries.push({
-          date: stringDate,
-          description: this.newDesc,
-          startTime: stringStart,
-          endTime: stringEnd,
-          hours: this.newHours
+        let formData = new FormData();
+        formData.append('entry_date', stringDate);
+        formData.append('description', this.newDesc);
+        formData.append('start_time', stringStart);
+        formData.append('end_time', stringEnd);
+        formData.append('hours', this.newHours);
+
+        var newEntry = {};
+        formData.forEach(function(value, key){
+          newEntry[key] = value;
         });
-        this.newDate = '';
-        this.newDesc = '';
-        this.newStart = '';
-        this.newEnd = '';
-        this.newHours = '';
-        this.error = false;
+
+        axios({
+          method: 'post',
+          url: 'api/entries.php',
+          data: formData,
+          config: { headers: {'Content-Type': 'multipart/form-data' }}
+        })
+        .then(function (response) {
+          //handle success
+          console.log(response);
+          app.entries.push(newEntry);
+          appF.resetForm();
+        })
+        .catch(function (response) {
+          //handle error
+          this.error = true;
+          console.log(response);
+        });
       }
+    },
+    resetForm: function() {
+      this.newDate = '';
+      this.newDesc = '';
+      this.newStart = '';
+      this.newEnd = '';
+      this.newHours = '';
+      this.error = false;
     },
     parseDateTime: function(){
       var date = moment(this.newDate);
       stringDate = date.format('YYYY-MM-DD');
 
       var start = moment(stringDate + ' ' + this.newStart);
-      stringStart = start.format('h:mm a');
+      stringStart = start.format('HH:mm');
 
       var end = moment(stringDate + ' ' + this.newEnd);
-      stringEnd = end.format('h:mm a');
+      stringEnd = end.format('HH:mm');
 
       if( date.isValid() && start.isValid() && end.isValid() ) {
         var hours = end.diff(start, 'hours', true);
@@ -71,7 +95,7 @@ var app = new Vue({
     },
     deleteEntry: function(index) {
       if (confirm('Are you sure you want to delete this entry?')) {
-          entries.splice(index,1);
+          app.entries.splice(index,1);
       } else {
           // Do nothing!
       }
@@ -80,14 +104,16 @@ var app = new Vue({
       var displayDate = moment(date).format('MMM D, YYYY');
       return displayDate;
     },
-    storeDate: function(dateString) {
-      var date = moment(dateString).format('YYYY-MM-DD');
-      return date;
+    displayTime : function(time) {
+      var displayTime = moment(time).format('h:mm a');
+      console.log(displayTime);
+      return displayTime;
     },
     getEntries: function(){
       axios.get('api/entries.php')
       .then(function (response) {
           app.entries = response.data;
+          console.log(response.data);
       })
       .catch(function (error) {
           console.log(error);
