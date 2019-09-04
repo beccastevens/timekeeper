@@ -44,14 +44,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(time, index) in times">
+        <tr v-for="(time, index) in entries">
           <td>
             <button v-on:click="deleteEntry(index)" class="delete">X</button>
-            {{ displayDate(time.date) }}
+            {{ displayDate(time.entry_date) }}
           </td>
           <td>{{time.description}}</td>
-          <td>{{time.startTime}}</td>
-          <td>{{time.endTime}}</td>
+          <td>{{time.start_time}}</td>
+          <td>{{time.end_time}}</td>
           <td>{{time.hours}}</td>
         </tr>
       </tbody>

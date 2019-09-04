@@ -1,9 +1,7 @@
-const times = this.entries;
-
-new Vue({
+var app = new Vue({
   el: '#timeSheet',
   data: {
-    times: times,
+    entries: [],
     newDate: '',
     newDesc: '',
     newStart: '',
@@ -13,7 +11,6 @@ new Vue({
     dateError: false
   },
   mounted: function () {
-    console.log('Hello from Vue!');
     this.getEntries();
   },
   methods: {
@@ -21,7 +18,7 @@ new Vue({
       if(!this.newDate || !this.newDesc || !this.newHours) {
         this.error = true;
       } else {
-        this.times.push({
+        this.entries.push({
           date: stringDate,
           description: this.newDesc,
           startTime: stringStart,
@@ -74,7 +71,7 @@ new Vue({
     },
     deleteEntry: function(index) {
       if (confirm('Are you sure you want to delete this entry?')) {
-          times.splice(index,1);
+          entries.splice(index,1);
       } else {
           // Do nothing!
       }
@@ -90,8 +87,7 @@ new Vue({
     getEntries: function(){
       axios.get('api/entries.php')
       .then(function (response) {
-          console.log(response.data);
-          this.entries = response.data;
+          app.entries = response.data;
       })
       .catch(function (error) {
           console.log(error);
@@ -101,7 +97,7 @@ new Vue({
   computed: {
     totalHours: function(){
       var total = 0;
-      this.times.forEach((time) => {
+      this.entries.forEach((time) => {
         total += parseFloat(time.hours);
       });
       return total;
