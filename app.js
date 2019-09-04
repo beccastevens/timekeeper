@@ -125,11 +125,10 @@ var app = new Vue({
       var displayDate = moment(date).format('MMM D, YYYY');
       return displayDate;
     },
-    // displayTime : function(time) {
-    //   var displayTime = moment(time).format('h:mm a');
-    //   console.log(displayTime);
-    //   return displayTime;
-    // },
+    displayTime : function(datetime) {
+      var displayTime = moment(datetime).format('h:mm a');
+      return displayTime;
+    },
     getEntries: function(){
       axios.get('api/entries.php')
       .then(function (response) {
